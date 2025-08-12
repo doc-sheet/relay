@@ -1,4 +1,5 @@
 from collections import defaultdict
+import logging
 import json
 from google.protobuf.json_format import MessageToDict
 import msgpack
@@ -184,7 +185,14 @@ def kafka_consumer(request, get_topic_name, processing_config):
             "auto.offset.reset": "earliest",
         }
 
-        consumer = kafka.Consumer(settings)
+        logging.basicConfig(level='DEBUG')
+        logger = logging.getLogger(f'consumer-%s/{topic_name}' % settings['group.id'])
+        logger.setLevel(logging.DEBUG)
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter('[%(name)s] %(asctime)-15s %(levelname)-8s %(message)s'))
+        logger.addHandler(handler)
+
+        consumer = kafka.Consumer(settings, logger=logger, debug='all')
         consumer.assign([kafka.TopicPartition(t, 0) for t in topics])
 
         def die():

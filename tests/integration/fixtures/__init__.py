@@ -1,6 +1,7 @@
 import time
 
 from requests import Session
+import sys
 from requests.adapters import HTTPAdapter
 from sentry_sdk.envelope import Envelope, Item, PayloadRef
 from urllib3.util import Retry
@@ -129,6 +130,7 @@ class SentryLike:
         dsn_key_idx=0,
         dsn_key=None,
     ):
+        print('send_event',f'{project_id=}', f'{payload=}', f'{headers=}',file=sys.stderr)
         if payload is None:
             payload = {"message": "Hello, World!"}
 
@@ -152,6 +154,7 @@ class SentryLike:
 
         response = self.post(url, headers=headers, **kwargs)
         response.raise_for_status()
+        print('send_event out', response.json(),f'{payload=}',f'{headers=}',file=sys.stderr)
         return response.json()
 
     def send_nel_event(
