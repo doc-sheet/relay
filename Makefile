@@ -1,6 +1,7 @@
 SHELL=/bin/bash
 export RELAY_PYTHON_VERSION := python3
 export RELAY_FEATURES :=
+export RUST_BACKTRACE := 1
 RELAY_ARGO_AGS ?= ${CARGO_ARGS}
 
 all: check test ## run all checks and tests

@@ -138,6 +138,7 @@ use relay_log::Hub;
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 
 pub fn main() {
+unsafe { backtrace_on_stack_overflow::enable() };
     let exit_code = match cli::execute() {
         Ok(()) => 0,
         Err(err) => {
