@@ -1009,6 +1009,7 @@ checksum = "667d186d69c8b4dd7f8cf1ac71bec88b312e1752f2d1a63028aa9ea124c3f191"
 dependencies = [
  "deadpool",
  "redis",
+ "tokio",
 ]
 
 [[package]]
