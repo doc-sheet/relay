@@ -145,7 +145,7 @@ impl AsyncRedisClient {
             .into_iter()
             .map(|s| s.to_owned())
             .collect::<Vec<_>>();
-        // We use our custom single manager which performs recycling in a different way from the
+        // We use our custom manager which performs recycling in a different way from the
         // default manager.
         let manager = pool::CustomSentinelManager::new(
             sentinels,
