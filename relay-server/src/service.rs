@@ -164,6 +164,8 @@ impl ServiceState {
             .transpose()
             .context(ServiceError::Redis)?;
 
+println!("Now {:?} will print!", redis_clients);
+
         // If we have Redis configured, we want to initialize all the scripts by loading them in
         // the scripts cache if not present. Our custom ConnectionLike implementation relies on this
         // initialization to work properly since it assumes that scripts are loaded across all Redis
@@ -472,6 +474,7 @@ async fn initialize_redis_scripts(
     scripts: &[&Script; 3],
 ) -> Result<(), RedisError> {
     let mut connection = client.get_connection().await?;
+println!("Now 2 {:?} will print!", connection);
 
     for script in scripts {
         // We load on all instances without checking if the script is already in cache because of a
