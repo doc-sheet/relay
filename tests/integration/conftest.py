@@ -263,3 +263,11 @@ def redis_client():
 @pytest.fixture
 def secondary_redis_client():
     return redis.Redis(host="127.0.0.1", port=6380, db=0)
+
+
+@pytest.fixture
+def redis_sentinel_client():
+    sentinel = redis.sentinel.Sentinel(
+        [("127.0.0.1", 26379), ("127.0.0.1", 26380)], db=0
+    )
+    return sentinel.master_for("redis-sentry")
