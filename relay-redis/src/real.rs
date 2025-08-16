@@ -175,7 +175,7 @@ impl AsyncRedisClient {
                 AsyncRedisConnection::Sentinel(pool.get().await.map_err(RedisError::Pool)?)
             }
         };
-
+println!("Now 2 {:?} will print connec reaaal!", connection);
         Ok(connection)
     }
 

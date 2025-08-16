@@ -164,7 +164,6 @@ impl ServiceState {
             .transpose()
             .context(ServiceError::Redis)?;
 
-println!("Now {:?} will print!", redis_clients);
 
         // If we have Redis configured, we want to initialize all the scripts by loading them in
         // the scripts cache if not present. Our custom ConnectionLike implementation relies on this
@@ -176,6 +175,9 @@ println!("Now {:?} will print!", redis_clients);
                 .await
                 .context(ServiceError::Redis)?;
         }
+
+println!("Now {:?} will print ServiceState start!", services);
+println!("Now {:?} will print ServiceState start redis_clients!", redis_clients);
 
         // We create an instance of `MemoryStat` which can be supplied composed with any arbitrary
         // configuration object down the line.
@@ -415,6 +417,7 @@ println!("Now {:?} will print!", redis_clients);
 /// is created for each use case.
 #[cfg(feature = "processing")]
 pub fn create_redis_clients(configs: RedisConfigsRef<'_>) -> Result<RedisClients, RedisError> {
+println!("Now {:?} will print configs create_redis_clients!", configs);
     match configs {
         RedisConfigsRef::Unified(unified) => {
             let client = create_async_redis_client(&unified)?;
