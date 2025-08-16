@@ -39,4 +39,8 @@ impl AsyncRedisClient {
     pub async fn single(_server: &str, _opts: &RedisConfigOptions) -> Result<Self, RedisError> {
         Ok(Self)
     }
+
+    pub async fn sentinel<'a>(_sentinels: impl IntoIterator<Item = &'a str>, _master_name &str, _opts: &RedisConfigOptions) -> Result<Self, RedisError> {
+        Ok(Self)
+    }
 }
