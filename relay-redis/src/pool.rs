@@ -337,7 +337,7 @@ impl CustomSentinelManager {
         master_name: String,
         recycle_check_frequency: usize,
     ) -> RedisResult<Self> {
-relay_log::error!("Now 2  will print --- sentinel manager new!");
+relay_log::debug!("Now 2  will print --- sentinel manager new!");
         Ok(Self {
             manager: SentinelManager::new(params, master_name, None, SentinelServerType::Master)?,
             recycle_check_frequency,
@@ -350,7 +350,7 @@ impl Manager for CustomSentinelManager {
     type Error = RedisError;
 
     async fn create(&self) -> Result<TrackedConnection<MultiplexedConnection>, RedisError> {
-relay_log::error!("Now 2  will print --- sentinel manager create!");
+relay_log::debug!("Now 2  will print --- sentinel manager create!");
         self.manager.create().await.map(TrackedConnection::from)
     }
 
@@ -359,7 +359,7 @@ relay_log::error!("Now 2  will print --- sentinel manager create!");
         conn: &mut TrackedConnection<MultiplexedConnection>,
         metrics: &Metrics,
     ) -> RecycleResult<RedisError> {
-relay_log::error!("Now 2  will print --- sentinel manager recycle!");
+relay_log::debug!("Now 2  will print --- sentinel manager recycle!");
         // If the connection is marked to be detached, we return and error, signaling that this
         // connection must be detached from the pool.
         if conn.detach {
@@ -383,7 +383,7 @@ relay_log::error!("Now 2  will print --- sentinel manager recycle!");
 
 impl From<Object<CustomSentinelManager>> for CustomSentinelConnection {
     fn from(conn: Object<CustomSentinelManager>) -> Self {
-relay_log::error!("Now 2  will print --- sentinel connection created!");
+relay_log::debug!("Now 2  will print --- sentinel connection created!");
         Self(conn)
     }
 }
