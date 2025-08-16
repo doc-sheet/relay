@@ -79,8 +79,6 @@ pub enum AsyncRedisClient {
     Cluster(pool::CustomClusterPool),
     /// Contains a connection pool to a single Redis instance.
     Single(pool::CustomSinglePool),
-    /// Contains a connection pool to a Redis-master instance.
-    Sentinel(pool::CustomSentinelPool),
 }
 
 impl AsyncRedisClient {
@@ -128,37 +126,6 @@ impl AsyncRedisClient {
         Ok(AsyncRedisClient::Single(pool))
     }
 
-    /// Creates a new connection client for a Redis-master instance.
-    ///
-    /// This method initializes a connection client that can communicate with multiple Sentinel nodes
-    /// to retrieve connection to a current Redis-master instance.
-    /// The client is configured with the specified sentinel servers, master name and options.
-    ///
-    /// The client uses a custom Sentinel manager that implements a specific connection recycling
-    /// strategy, ensuring optimal performance and reliability in single-instance environments.
-    pub fn sentinel<'a>(
-        sentinels: impl IntoIterator<Item = &'a str>,
-        master_name: &str,
-        opts: &RedisConfigOptions,
-    ) -> Result<Self, RedisError> {
-        let sentinels = sentinels
-            .into_iter()
-            .map(|s| s.to_owned())
-            .collect::<Vec<_>>();
-        // We use our custom manager which performs recycling in a different way from the
-        // default manager.
-        let manager = pool::CustomSentinelManager::new(
-            sentinels,
-            master_name.to_owned(),
-            opts.recycle_check_frequency,
-        )
-        .map_err(RedisError::Redis)?;
-
-        let pool = Self::build_pool(manager, opts)?;
-
-        Ok(AsyncRedisClient::Sentinel(pool))
-    }
-
     /// Acquires a connection from the pool.
     ///
     /// Returns a new [`AsyncRedisConnection`] that can be used to execute Redis commands.
@@ -170,9 +137,6 @@ impl AsyncRedisClient {
             }
             Self::Single(pool) => {
                 AsyncRedisConnection::Single(pool.get().await.map_err(RedisError::Pool)?)
-            }
-            Self::Sentinel(pool) => {
-                AsyncRedisConnection::Sentinel(pool.get().await.map_err(RedisError::Pool)?)
             }
         };
 println!("Now 2 {:?} will print connec reaaal!", connection);
@@ -187,7 +151,6 @@ println!("Now 2 {:?} will print connec reaaal!", connection);
         let status = match self {
             Self::Cluster(pool) => pool.status(),
             Self::Single(pool) => pool.status(),
-            Self::Sentinel(pool) => pool.status(),
         };
 
         RedisClientStats {
@@ -207,9 +170,6 @@ println!("Now 2 {:?} will print connec reaaal!", connection);
                 pool.retain(|_, metrics| predicate(metrics));
             }
             Self::Single(pool) => {
-                pool.retain(|_, metrics| predicate(metrics));
-            }
-            Self::Sentinel(pool) => {
                 pool.retain(|_, metrics| predicate(metrics));
             }
         }
@@ -250,7 +210,6 @@ impl std::fmt::Debug for AsyncRedisClient {
         match self {
             AsyncRedisClient::Cluster(_) => write!(f, "AsyncRedisPool::Cluster"),
             AsyncRedisClient::Single(_) => write!(f, "AsyncRedisPool::Single"),
-            AsyncRedisClient::Sentinel(_) => write!(f, "AsyncRedisPool::Sentinel"),
         }
     }
 }
@@ -266,8 +225,6 @@ pub enum AsyncRedisConnection {
     Cluster(pool::CustomClusterConnection),
     /// A connection to a single Redis instance.
     Single(pool::CustomSingleConnection),
-    /// A connection to a single Redis-master instance
-    Sentinel(pool::CustomSentinelConnection),
 }
 
 impl std::fmt::Debug for AsyncRedisConnection {
@@ -275,7 +232,6 @@ impl std::fmt::Debug for AsyncRedisConnection {
         let name = match self {
             Self::Cluster(_) => "Cluster",
             Self::Single(_) => "Single",
-            Self::Sentinel(_) => "Sentinel",
         };
         f.debug_tuple(name).finish()
     }
@@ -286,7 +242,6 @@ impl redis::aio::ConnectionLike for AsyncRedisConnection {
         match self {
             Self::Cluster(conn) => conn.req_packed_command(cmd),
             Self::Single(conn) => conn.req_packed_command(cmd),
-            Self::Sentinel(conn) => conn.req_packed_command(cmd),
         }
     }
 
@@ -299,7 +254,6 @@ impl redis::aio::ConnectionLike for AsyncRedisConnection {
         match self {
             Self::Cluster(conn) => conn.req_packed_commands(cmd, offset, count),
             Self::Single(conn) => conn.req_packed_commands(cmd, offset, count),
-            Self::Sentinel(conn) => conn.req_packed_commands(cmd, offset, count),
         }
     }
 
@@ -307,7 +261,6 @@ impl redis::aio::ConnectionLike for AsyncRedisConnection {
         match self {
             Self::Cluster(conn) => conn.get_db(),
             Self::Single(conn) => conn.get_db(),
-            Self::Sentinel(conn) => conn.get_db(),
         }
     }
 }
