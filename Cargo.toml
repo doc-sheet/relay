@@ -23,7 +23,7 @@ lto = "thin"
 [profile.release-cabi]
 inherits = "release"
 lto = true
-debug = false
+debug = true
 strip = true
 
 [workspace.lints.clippy]
