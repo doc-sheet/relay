@@ -139,7 +139,7 @@ impl AsyncRedisClient {
                 AsyncRedisConnection::Single(pool.get().await.map_err(RedisError::Pool)?)
             }
         };
-eprintln!("Now 2 {:?} will print connec reaaal!", connection);
+//eprintln!("Now 2 {:?} will print connec reaaal!", connection);
         Ok(connection)
     }
 
