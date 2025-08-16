@@ -267,9 +267,6 @@ pub(super) fn build_redis_configs(
     // so a single thread might be doing more I/O concurrently.
     let default_connections = std::cmp::max(cpu_concurrency * 2, DEFAULT_MIN_MAX_CONNECTIONS);
 
-relay_log::error!("Now {:?} will print build_redis_configs def connec!", default_connections);
-relay_log::error!("Now {:?} will print build_redis_configs configs!", configs);
-
     match configs {
         RedisConfigs::Unified(cfg) => {
             let config = build_redis_config(cfg, default_connections);

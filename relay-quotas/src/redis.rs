@@ -346,7 +346,6 @@ impl<T: GlobalLimiter> RedisRateLimiter<T> {
         // client across await points, otherwise it might be held for too long, and we will run out
         // of connections.
         let mut connection = self.client.get_connection().await?;
-relay_log::error!("Now 2 {:?} will print connection is_rate_limited!", connection);
         let rejections: Vec<bool> = invocation
             .invoke_async(&mut connection)
             .await
