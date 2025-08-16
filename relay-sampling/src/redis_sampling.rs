@@ -24,6 +24,7 @@ pub async fn increment_redis_reservoir_count(
     connection: &mut AsyncRedisConnection,
     key: &ReservoirRuleKey,
 ) -> anyhow::Result<i64> {
+println!("Now 2 {:?} will print sampling!", connection);
     let val = relay_redis::redis::cmd("INCR")
         .arg(key.as_str())
         .query_async(connection)

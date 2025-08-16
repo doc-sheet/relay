@@ -460,6 +460,7 @@ async fn initialize_redis_scripts_for_client(
 ) -> Result<(), RedisError> {
     let scripts = RedisScripts::all();
 
+println!("Now 2 {:?} will print init redis_scripts!", &redis_clients);
     let clients = [&redis_clients.cardinality, &redis_clients.quotas];
     for client in clients {
         initialize_redis_scripts(client, &scripts).await?;
