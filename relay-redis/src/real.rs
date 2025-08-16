@@ -79,6 +79,8 @@ pub enum AsyncRedisClient {
     Cluster(pool::CustomClusterPool),
     /// Contains a connection pool to a single Redis instance.
     Single(pool::CustomSinglePool),
+    /// Contains a connection pool to a Redis-master instance.
+    Sentinel(pool::CustomSentinelPool),
 }
 
 impl AsyncRedisClient {
