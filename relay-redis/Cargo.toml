@@ -31,7 +31,6 @@ serde = { workspace = true }
 tokio = { workspace = true, features = ["time"] }
 thiserror = { workspace = true }
 
-relay-log = { workspace = true }
 relay-system = { workspace = true }
 
 [features]
