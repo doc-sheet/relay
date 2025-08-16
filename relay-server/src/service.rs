@@ -176,8 +176,8 @@ impl ServiceState {
                 .context(ServiceError::Redis)?;
         }
 
-println!("Now {:?} will print ServiceState start config!", config);
-println!("Now {:?} will print ServiceState start redis_clients!", redis_clients);
+relay_log::error!("Now {:?} will print ServiceState start config!", config);
+relay_log::error!("Now {:?} will print ServiceState start redis_clients!", redis_clients);
 
         // We create an instance of `MemoryStat` which can be supplied composed with any arbitrary
         // configuration object down the line.
@@ -417,7 +417,7 @@ println!("Now {:?} will print ServiceState start redis_clients!", redis_clients)
 /// is created for each use case.
 #[cfg(feature = "processing")]
 pub fn create_redis_clients(configs: RedisConfigsRef<'_>) -> Result<RedisClients, RedisError> {
-println!("Now {:?} will print configs create_redis_clients!", configs);
+relay_log::error!("Now {:?} will print configs create_redis_clients!", configs);
     match configs {
         RedisConfigsRef::Unified(unified) => {
             let client = create_async_redis_client(&unified)?;
@@ -463,7 +463,7 @@ async fn initialize_redis_scripts_for_client(
 ) -> Result<(), RedisError> {
     let scripts = RedisScripts::all();
 
-println!("Now 2 {:?} will print init redis_scripts!", &redis_clients);
+relay_log::error!("Now 2 {:?} will print init redis_scripts!", &redis_clients);
     let clients = [&redis_clients.cardinality, &redis_clients.quotas];
     for client in clients {
         initialize_redis_scripts(client, &scripts).await?;
@@ -478,7 +478,7 @@ async fn initialize_redis_scripts(
     scripts: &[&Script; 3],
 ) -> Result<(), RedisError> {
     let mut connection = client.get_connection().await?;
-println!("Now 2 {:?} will print!", connection);
+relay_log::error!("Now 2 {:?} will print!", connection);
 
     for script in scripts {
         // We load on all instances without checking if the script is already in cache because of a

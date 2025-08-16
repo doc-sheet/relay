@@ -64,7 +64,7 @@ impl RedisProjectSource {
         revision: Revision,
     ) -> Result<SourceProjectState, RedisProjectError> {
         let mut connection = self.redis.get_connection().await?;
-println!("Now 2 {:?} will print connection RedisProjectSource!", connection);
+relay_log::error!("Now 2 {:?} will print connection RedisProjectSource!", connection);
         // Only check for the revision if we were passed a revision.
         if let Some(revision) = revision.as_str() {
             let current_revision: Option<String> = cmd("GET")

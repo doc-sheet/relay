@@ -191,7 +191,7 @@ impl GlobalRateLimit {
         key: KeyRef<'_>,
         quantity: u64,
     ) -> Result<bool, RateLimitingError> {
-println!("Now 2 {:?} will print connec check_rate_limited!", connection);
+relay_log::error!("Now 2 {:?} will print connec check_rate_limited!", connection);
         let quota_slot = quota.slot();
 
         // There is 2 cases we are handling here:

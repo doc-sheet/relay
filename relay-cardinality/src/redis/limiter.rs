@@ -65,7 +65,7 @@ impl RedisSetLimiter {
 
         let mut num_hashes: u64 = 0;
 
-println!("Now 2 {:?} will print limiter!", connection);
+relay_log::error!("Now 2 {:?} will print limiter!", connection);
         let mut pipeline = self.script.pipe();
         for (scope, entries) in &scopes {
             let keys = scope.slots(timestamp).map(|slot| scope.to_redis_key(slot));
