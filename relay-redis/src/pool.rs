@@ -367,7 +367,10 @@ impl Manager for CustomSentinelManager {
 
         // If the interval has been reached, we optimistically assume the connection is active
         // without doing an actual `PING`.
-        if metrics.recycle_count % self.recycle_check_frequency != 0 {
+        if !metrics
+            .recycle_count
+            .is_multiple_of(self.recycle_check_frequency)
+        {
             return Ok(());
         }
 
