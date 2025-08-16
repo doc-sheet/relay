@@ -176,7 +176,7 @@ impl ServiceState {
                 .context(ServiceError::Redis)?;
         }
 
-println!("Now {:?} will print ServiceState start!", services);
+println!("Now {:?} will print ServiceState start config!", config);
 println!("Now {:?} will print ServiceState start redis_clients!", redis_clients);
 
         // We create an instance of `MemoryStat` which can be supplied composed with any arbitrary
