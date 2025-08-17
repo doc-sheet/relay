@@ -763,9 +763,9 @@ jobs:
       - name: Install Rust Toolchain
         run: rustup toolchain install stable --profile minimal --no-self-update
 
-      - uses: swatinem/rust-cache@v2
-        with:
-          key: ${{ github.job }}
+#      - uses: swatinem/rust-cache@v2
+#        with:
+#          key: ${{ github.job }}
 
       - name: Setup SSH agent
         if: env.SSH_PRIVATE_KEY != ''
@@ -781,6 +781,8 @@ jobs:
         env:
           PYTEST_N: 6
           RELAY_VERSION_CHAIN: "23.12.0,latest"
+          #RUST_BACKTRACE: 1
+          RUST_BACKTRACE: full
 
   sentry-relay-integration-tests:
     name: Sentry-Relay Integration Tests

@@ -6,7 +6,7 @@ resolver = "2"
 [profile.dev]
 # Debug information slows down the build and increases caches in the
 # target folder, but we don't require stack traces in most cases.
-debug = false
+debug = true
 
 [profile.dev-debug]
 # A version of the dev profile with debug information enabled, for e.g. local
@@ -23,7 +23,7 @@ lto = "thin"
 [profile.release-cabi]
 inherits = "release"
 lto = true
-debug = false
+debug = true
 strip = true
 
 [workspace.lints.clippy]
@@ -104,7 +104,7 @@ criterion = "0.5.1"
 crossbeam-channel = "0.5.15"
 data-encoding = "2.6.0"
 deadpool = "0.12.2"
-deadpool-redis = "0.20.0"
+deadpool-redis = "0.21.1"
 debugid = "0.8.0"
 dialoguer = "0.11.0"
 dynfmt = "0.1.5"
@@ -158,7 +158,7 @@ rand = "0.9.1"
 rand_pcg = "0.9.0"
 rdkafka = "0.36.2"
 rdkafka-sys = "4.8.0"
-redis = { version = "0.29.2", default-features = false }
+redis = { version = "0.31.0", default-features = false }
 regex = "1.11.1"
 regex-lite = "0.1.6"
 reqwest = "0.12.9"
@@ -216,3 +216,4 @@ utf16string = "0.2.0"
 uuid = { version = "1.11.0", features = ["serde", "v4", "v7"] }
 walkdir = "2.5.0"
 zstd = { version = "0.13.2", features = ["experimental"] }
+

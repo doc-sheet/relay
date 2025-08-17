@@ -164,6 +164,7 @@ impl ServiceState {
             .transpose()
             .context(ServiceError::Redis)?;
 
+
         // If we have Redis configured, we want to initialize all the scripts by loading them in
         // the scripts cache if not present. Our custom ConnectionLike implementation relies on this
         // initialization to work properly since it assumes that scripts are loaded across all Redis

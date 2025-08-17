@@ -28,7 +28,7 @@ def gobetween(background_process, random_port, config_dir):
         config.write(
             json.dumps(
                 {
-                    "logging": {"level": "debug", "output": "stdout"},
+                    "logging": {"level": "debug", "output": "stdout", "enable_backtraces": True},
                     "api": {
                         "enabled": True,
                         "bind": f"{host}:{random_port()}",
