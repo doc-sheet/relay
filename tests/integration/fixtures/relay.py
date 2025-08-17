@@ -141,7 +141,7 @@ def relay(mini_sentry, random_port, background_process, config_dir, get_relay_bi
             "sentry": {"dsn": mini_sentry.internal_error_dsn, "enabled": True},
             "limits": {"max_api_file_upload_size": "1MiB"},
             "cache": {"batch_interval": 0},
-            "logging": {"level": "trace"},
+            "logging": {"level": "trace", "enable_backtraces": true},
             "http": {"timeout": 2},
             "processing": {"enabled": False, "kafka_config": [], "redis": ""},
             "outcomes": {
